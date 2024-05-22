@@ -1,8 +1,6 @@
 console.log("Content script loaded 1");
 
-// Function to observe and click all .qt_read_more elements
 function observeAndClickMoreButtons() {
-  // Create Intersection Observer to click all .qt_read_more elements in viewport
   const observer = new IntersectionObserver((entries, observer) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
@@ -12,11 +10,9 @@ function observeAndClickMoreButtons() {
     });
   });
 
-  // Observe all .qt_read_more elements in the document
   let allMore = document.querySelectorAll(".qt_read_more");
   allMore.forEach((more) => observer.observe(more));
 
-  // Observe any new elements that might be added later
   const mutationObserver = new MutationObserver(() => {
     let newMore = document.querySelectorAll(".qt_read_more:not(.observed)");
     newMore.forEach((more) => {
@@ -28,11 +24,9 @@ function observeAndClickMoreButtons() {
   mutationObserver.observe(document.body, { childList: true, subtree: true });
 }
 
-// Call the function to start observing
 observeAndClickMoreButtons();
 
 document.addEventListener("click", function (event) {
-  console.log(event);
   const target = event.target;
   if (target.classList.contains("section")) {
     displayContent(target);
@@ -76,11 +70,9 @@ document.addEventListener("click", function (event) {
       }
     );
   }
-  console.log(target);
 });
 
 function displayContent(target) {
-  console.log(target);
   let sectionElement =
     target.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode
       .parentNode;
