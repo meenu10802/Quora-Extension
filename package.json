@@ -13,7 +13,8 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scripts build && npm run copy-manifest-icon",
+    "copy-manifest-icon": "copy manifest.json build && copy icon.png build && copy background.js build && copy content.js build",
     "test": "react-scripts test"
   },
   "eslintConfig": {

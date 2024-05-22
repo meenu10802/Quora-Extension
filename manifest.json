@@ -1,0 +1,36 @@
+{
+    "manifest_version": 3,
+    "name": "Comments Executor",
+    "description": "An Commenting Automation Workflow Builder Chrome Extension",
+    "minimum_chrome_version": "116",
+    "permissions": [
+      "activeTab",
+      "scripting",
+      "sidePanel",
+      "contextMenus",
+      "tabs",
+      "notifications",
+      "storage"
+    ],
+    "host_permissions": ["https://*/*", "http://*/*"],
+    "optional_permissions": ["topSites"],
+    "version": "1.0.0",
+    "background": {
+      "service_worker": "background.js"
+    },
+    "side_panel": {
+      "default_path": "index.html"
+    },
+    "content_scripts": [
+      {
+        "js": ["content.js"],
+        "matches": ["*://*/*"]
+      }
+    ],
+    "icons": {
+      "16": "icon.png",
+      "48": "icon.png",
+      "128": "icon.png"
+    }
+  }
+  
