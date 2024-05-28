@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import { sendMessage } from './notification';
 
+
 const App = () => {
   const [input, setInput] = useState('');
   const [response, setResponse] = useState('');
+
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -19,6 +22,7 @@ const App = () => {
       console.log(data.data);
       setResponse(data.data);
       sendMessage('Response received', 'Review or copy the content', data.data);
+      
     } catch (error) {
       console.error('Error fetching API:', error);
     }
@@ -33,17 +37,31 @@ const App = () => {
     alert('Copied to clipboard');
   };
 
+  const handleInsertToQuora = () => {
+    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+      chrome.tabs.sendMessage(tabs[0].id, { action: 'findQuoraEditor', response: response });
+    });
+  };
+  
+
   return (
     <div>
-      <h1>SubEngage  Chrome Extension</h1>
+      <h1>SubEngage Chrome Extension</h1>
       <form onSubmit={handleSubmit}>
-        <input type="text" value={input} onChange={(e) => setInput(e.target.value)} />
+        <input
+          type="text"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+        />
         <button type="submit">Submit</button>
       </form>
       {response && (
         <div>
           <button onClick={handleReview}>Review</button>
           <button onClick={handleCopy}>Copy to Clipboard</button>
+          <button onClick={handleInsertToQuora}>Insert into quora</button>
+
+          
         </div>
       )}
     </div>

@@ -1,4 +1,77 @@
 console.log("Content script loaded 1");
+console.log("Content script loaded sjhubahm");
+
+
+// Listen for messages from the extension
+chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
+  if (message.action === 'findQuoraEditor') {
+    const response = message.response;
+   findQuoraEditorAndAddButtons(response);
+  }
+  else if (message.action === 'insertTextIntoLinkedInShareBox') {
+    const response = message.response;
+   
+    insertTextIntoLinkedInShareBox(response);
+  }
+});
+
+
+
+
+
+const findQuoraEditorAndAddButtons = (response) => {
+  const quoraEditor = document.querySelector('.q-box.editor_wrapper .doc[contenteditable="true"]');
+  if (quoraEditor) {
+    console.log('Quora editor found:', quoraEditor);
+    // Append buttons inside the Quora editor
+    appendButtonsInsideQuoraEditor(quoraEditor);
+    // Insert response into Quora editor
+    quoraEditor.innerHTML = response;
+    console.log('Inserted response into Quora editor:', response);
+  } else {
+    console.log('Quora editor not found. Retrying...');
+    setTimeout(() => findQuoraEditorAndAddButtons(response), 1000); // Retry after 1 second
+  }
+};
+
+const appendButtonsInsideQuoraEditor = (quoraEditor) => {
+  // Create buttons
+  const button1 = createButton("Button 1");
+  const button2 = createButton("Button 2");
+  // Append buttons to the Quora editor
+  quoraEditor.appendChild(button1);
+  quoraEditor.appendChild(button2);
+};
+
+const createButton = (text) => {
+  const button = document.createElement("button");
+  button.textContent = text;
+  button.style.marginRight = "10px"; // Add styling if needed
+  button.addEventListener("click", () => {
+    // Handle button click event
+    console.log(`Button "${text}" clicked`);
+  });
+  return button;
+};
+
+// Call the function with the desired response
+
+
+
+const insertTextIntoLinkedInShareBox = (text) => {
+  console.log('Attempting to find LinkedIn Share Box...');
+  const shareBox = document.querySelector('.share-box .editor-container .ql-editor[role="textbox"]');
+  
+  if (shareBox) {
+    console.log('LinkedIn Share Box found:', shareBox);
+    shareBox.innerText = text;
+    console.log('Inserted text into LinkedIn Share Box:', text);
+  } else {
+    console.log('LinkedIn Share Box not found. Retrying...');
+    setTimeout(() => insertTextIntoLinkedInShareBox(text), 1000); // Retry after 1 second
+  }
+};
+
 
 function observeAndClickMoreButtons() {
   const observer = new IntersectionObserver((entries, observer) => {
