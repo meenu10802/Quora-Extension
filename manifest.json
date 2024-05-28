@@ -1,7 +1,7 @@
 {
     "manifest_version": 3,
-    "name": "Comments Executor",
-    "description": "An Commenting Automation Workflow Builder Chrome Extension",
+    "name": "SubEngage AI",
+    "description": "Chrome Extension for for helping in Content Generation with AI",
     "minimum_chrome_version": "116",
     "permissions": [
       "activeTab",
