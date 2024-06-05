@@ -11,7 +11,7 @@ const App = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch('https://visitsaudiai.com/api/v1/llm', {
+      const res = await fetch('https://app.spireflow.io/api/v1/llm', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -37,12 +37,6 @@ const App = () => {
     alert('Copied to clipboard');
   };
 
-  const handleInsertToQuora = () => {
-    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-      chrome.tabs.sendMessage(tabs[0].id, { action: 'findQuoraEditor', response: response });
-    });
-  };
-  
 
   return (
     <div>
@@ -59,8 +53,7 @@ const App = () => {
         <div>
           <button onClick={handleReview}>Review</button>
           <button onClick={handleCopy}>Copy to Clipboard</button>
-          <button onClick={handleInsertToQuora}>Insert into quora</button>
-
+      
           
         </div>
       )}

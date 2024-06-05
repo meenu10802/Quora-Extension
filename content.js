@@ -1,7 +1,3 @@
-console.log("Content script loaded 1");
-console.log("Content script loaded sjhubahm");
-
-
 // Listen for messages from the extension
 chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
   if (message.action === 'findQuoraEditor') {
@@ -10,11 +6,9 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
   }
   else if (message.action === 'insertTextIntoLinkedInShareBox') {
     const response = message.response;
-   
     insertTextIntoLinkedInShareBox(response);
   }
 });
-
 
 
 
@@ -36,20 +30,7 @@ const findQuoraEditorAndAddButtons = (response) => {
 
 
 
-
-const insertTextIntoLinkedInShareBox = (text) => {
-  console.log('Attempting to find LinkedIn Share Box...');
-  const shareBox = document.querySelector('.share-box .editor-container .ql-editor[role="textbox"]');
-  
-  if (shareBox) {
-    console.log('LinkedIn Share Box found:', shareBox);
-    shareBox.innerText = text;
-    console.log('Inserted text into LinkedIn Share Box:', text);
-  } else {
-    console.log('LinkedIn Share Box not found. Retrying...');
-    setTimeout(() => insertTextIntoLinkedInShareBox(text), 1000); // Retry after 1 second
-  }
-};
+findQuoraEditorAndAddButtons('');
 
 
 function observeAndClickMoreButtons() {
@@ -79,24 +60,31 @@ function observeAndClickMoreButtons() {
 observeAndClickMoreButtons();
 
 
-// Select the Quora editor
-// Function to create buttons
-
-
-
 function createButton(text) {
   let button = document.createElement("button");
   button.textContent = text;
   button.classList.add(text); // Add class for identifying the button
-  button.style.backgroundColor = "#b92b27";
+  // button.style.backgroundColor = "#b92b27";
+  // button.style.backgroundColor = "#8ecdf7";
   button.style.color = "white";
   button.style.border = "none";
   button.style.padding = "10px 20px";
   button.style.borderRadius = "5px";
   button.style.cursor = "pointer";
   button.style.margin = "5px";
+  const hostname = window.location.hostname;
+  if (hostname.includes('x.com')) {
+    
+    button.style.backgroundColor = "#8ecdf7"; // Color for Quora
+  } else if (hostname.includes('quora.com')) {
+    
+    button.style.backgroundColor = "#b92b27"; // Color for Twitter
+  } else {
+    button.style.backgroundColor = "#cccccc"; // Default color
+  }
   return button;
 }
+
 
 // Function to display buttons in the Quora editor
 function displayButtonsInEditor() {
@@ -153,10 +141,154 @@ function displayButtonsInEditor() {
     quoraEditor2.parentElement.appendChild(button5);
     quoraEditor2.parentElement.appendChild(button6);
   }
+  
 }
 
-function quoraPostwrite()
-{
+
+// Function to display buttons in the twiiter editor
+function displayButtonsInEditorTwitter() {
+  const editor = document.querySelector('div[aria-label="Post text"]');
+  if (editor && !editor.parentElement.querySelector(".Funny")) {
+    let button1 = createButton("Funny");
+    let button2 = createButton("Serious");
+    let button3 = createButton("Helpful");
+    let button4 = createButton("Disagree");
+    let button5 = createButton("Strongly_Agree");
+    let button6 = createButton("Insightful");
+
+    button1.addEventListener("click", () => {
+      console.log("Funny button clicked");
+      insertContentIntoTwitterEditor('Funny')
+      // Add your logic here for Funny button
+    });
+
+    button2.addEventListener("click", () => {
+      console.log("Serious button clicked");
+      // Add your logic here for Serious button
+      insertContentIntoTwitterEditor('Serious')
+    });
+
+    button3.addEventListener("click", () => {
+      console.log("Helpful button clicked");
+      insertContentIntoTwitterEditor('Helpful')
+      // Add your logic here for Helpful button
+    });
+
+    button4.addEventListener("click", () => {
+      console.log("Disagree button clicked");
+      insertContentIntoTwitterEditor('Disagree')
+      // Add your logic here for Disagree button
+    });
+
+    button5.addEventListener("click", () => {
+      console.log("Strongly Agree button clicked");
+      insertContentIntoTwitterEditor('Strongly Agree ')
+      // Add your logic here for Strongly Agree button
+    });
+
+    button6.addEventListener("click", () => {
+      console.log("Insightful button clicked");
+      insertContentIntoTwitterEditor('Insightful')
+      // Add your logic here for Insightful button
+    });
+
+    // Append buttons to the quoraEditor container
+    editor.parentElement.appendChild(button1);
+    editor.parentElement.appendChild(button2);
+    editor.parentElement.appendChild(button3);
+    editor.parentElement.appendChild(button4);
+    editor.parentElement.appendChild(button5);
+    editor.parentElement.appendChild(button6);
+  }
+  
+}
+
+function insertContentIntoTwitterEditor(content) {
+  // Find the Twitter editor
+  let prompt =content;
+  postData("https://app.spireflow.io/api/v1/llm", { prompt: prompt }).then(
+    (data) => {
+      console.log(data);
+      if (data.success) {
+        console.log(data.data);
+        const editor = document.querySelector('div[aria-label="Post text"]');
+        // Remove the placeholder div if it exists
+        const placeholder = document.querySelector('.public-DraftEditorPlaceholder-inner');
+        if (placeholder) {
+          placeholder.style.display = 'none';
+        }
+        postText=data.data;
+        const textBlock = `
+        <div data-contents="true">
+          <div class="" data-block="true" data-editor="editor" data-offset-key="textBlock">
+            <div data-offset-key="textBlock" class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr">
+              <span data-offset-key="textBlock">
+                <span data-text="true">${postText}</span>
+              </span>
+            </div>
+          </div>
+        </div>
+      `;
+      editor.innerHTML = textBlock;
+        // editor.innerHTML = data.data;
+        addImageToPost(imageUrl);
+      
+     
+        // typeTextSlowly(quoraEditor2, data.data);
+      }
+    }
+  );
+  
+}
+
+
+
+function addImageToQuoraPost(imageUrl) {
+  const inputElement = document.querySelector('input[type="file"]'); // Adjust the selector as needed to target the image input element on Quora
+  if (inputElement) {
+    fetch(imageUrl)
+      .then(response => response.blob())
+      .then(blob => {
+        const file = new File([blob], 'uploaded-image.png', { type: blob.type });
+        const dataTransfer = new DataTransfer();
+        dataTransfer.items.add(file);
+        inputElement.files = dataTransfer.files;
+        const event = new Event('change', { bubbles: true });
+        inputElement.dispatchEvent(event);
+      })
+      .catch(error => {
+        console.error('Error fetching image:', error);
+      });
+  } else {
+    alert('Image upload input element not found.');
+  }
+}
+
+
+function addImageToPost(imageUrl) {
+  const inputElement = document.querySelector('input[data-testid="fileInput"]');
+  if (inputElement) {
+    fetch(imageUrl)
+      .then(response => response.blob())
+      .then(blob => {
+        const file = new File([blob], 'uploaded-image.png', { type: blob.type });
+        const dataTransfer = new DataTransfer();
+        dataTransfer.items.add(file);
+        inputElement.files = dataTransfer.files;
+        const event = new Event('change', { bubbles: true });
+        inputElement.dispatchEvent(event);
+      })
+      .catch(error => {
+        console.error('Error fetching image:', error);
+      });
+  } else {
+    alert('Image upload input element not found.');
+  }
+}
+
+
+
+function quoraPostwrite(){
   // let prompt = `You are a Quora writer agent, your job is to read this question: "${question}" and now for answer: "${answer}", write a comment for this answer with a ${tone} tone`;
   let prompt ="Hello";
   postData("https://app.spireflow.io/api/v1/llm", { prompt: prompt }).then(
@@ -165,25 +297,37 @@ function quoraPostwrite()
       if (data.success) {
         console.log(data.data);
         const quoraEditor2 = document.querySelector('.q-box.editor_wrapper .doc[contenteditable="true"]');
- 
-        typeTextSlowly(quoraEditor2, data.data);
+        quoraEditor2.innerHTML = data.data;
+
+        addImageToQuoraPost(imageUrl);
+        // imageUrlToBase64(imageUrl).then(base64Data => {
+        //   insertBase64Image(base64Data);
+        // }).catch(err => {
+        //   console.error('Error converting image URL to base64:', err);
+        // });
+        // typeTextSlowly(quoraEditor2, data.data);
       }
     }
   );
 }
 
-// Insert the base64 image into the editor
-
-
-// Function to insert a base64 image into the editor
-function insertBase64Image(base64Image) {
+function insertBase64ImageTwitter(base64Image) {
   // Create a new image element
   const img = document.createElement('img');
   img.src = base64Image;
 
+  // Find the Twitter editor
+  const editor = document.querySelector('div[aria-label="Post text"]');
+
+  // Remove the placeholder div if it exists
+  const placeholder = document.querySelector('.public-DraftEditorPlaceholder-inner');
+  if (placeholder) {
+    placeholder.style.display = 'none';
+  }
+
   // Insert the image at the caret position in the contenteditable element
   const selection = window.getSelection();
-  if (selection.rangeCount > 0) {
+  if (editor && selection.rangeCount > 0) {
     const range = selection.getRangeAt(0);
     range.deleteContents();
     range.insertNode(img);
@@ -193,23 +337,80 @@ function insertBase64Image(base64Image) {
     range.setEndAfter(img);
     selection.removeAllRanges();
     selection.addRange(range);
-  } else {
+  } else if (editor) {
     // If there's no selection, append the image at the end
-    quoraEditor2.appendChild(img);
+    editor.appendChild(img);
+  } else {
+    console.log('Twitter editor not found.');
   }
 }
-// Add click event listener to the document
-document.addEventListener("click", function (event) {
 
+// Function to insert a base64 image into the Quora editor
+function insertBase64Image(base64Image) {
+  // Create a new image element
+  console.log('Quora editor image section comese.');
+  const img = document.createElement('img');
+  img.src = base64Image;
 
-  const quoraTextarea = document.querySelector('.q-text-area.puppeteer_test_selector_input'); // Target the textarea inside the modal
+  // Find the Quora editor
   const quoraEditor2 = document.querySelector('.q-box.editor_wrapper .doc[contenteditable="true"]'); // Quora editor
 
+  // Insert the image at the caret position in the contenteditable element
+  const selection = window.getSelection();
+  if (quoraEditor2 && selection.rangeCount > 0) {
+    const range = selection.getRangeAt(0);
+    range.deleteContents();
+    range.insertNode(img);
+
+    // Move the caret after the inserted image
+    range.setStartAfter(img);
+    range.setEndAfter(img);
+    selection.removeAllRanges();
+    selection.addRange(range);
+  } else if (quoraEditor2) {
+    // If there's no selection, append the image at the end
+    quoraEditor2.appendChild(img);
+    console.log('Quora editor image section done.');
+  } else {
+    console.log('Quora editor not found.');
+  }
+}
+
+// Function to convert image URL to base64
+const imageUrlToBase64 = async (url) => {
+  const data = await fetch(url);
+  const blob = await data.blob();
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(blob);
+    reader.onloadend = () => {
+      const base64data = reader.result;
+      resolve(base64data);
+    };
+    reader.onerror = reject;
+  });
+};
+
+const vurl="https://unsplash.com/photos/woman-with-dslr-camera-e616t35Vbeg";
+// Usage
+const imageUrl = 'https://lh3.googleusercontent.com/i7cTyGnCwLIJhT1t2YpLW-zHt8ZKalgQiqfrYnZQl975-ygD_0mOXaYZMzekfKW_ydHRutDbNzeqpWoLkFR4Yx2Z2bgNj2XskKJrfw8';
+
+// Add click event listener to the document
+document.addEventListener("click", function (event) {
+  
+  const quoraTextarea = document.querySelector('.q-text-area.puppeteer_test_selector_input'); // Target the textarea inside the modal
+  const quoraEditor2 = document.querySelector('.q-box.editor_wrapper .doc[contenteditable="true"]'); // Quora editor
+  const modal = document.querySelector('.ModalContainerInternal___StyledFlex-s8es4q-2'); // Replace with the actual modal class or ID
   // Check if the click is within the modal or the textarea inside the modal
   if (modal && (modal.contains(event.target) || (quoraTextarea && quoraTextarea.contains(event.target)))) {
-    displayButtonsInEditor(quoraEditor2);
+    displayButtonsInEditor(quoraEditor2);    
   }
   
+  const twittereditor = document.querySelector('div[aria-label="Post text"]');
+  
+  if((twittereditor && twittereditor.contains(event.target))){
+    displayButtonsInEditorTwitter()
+  }
   
 });
 
