@@ -1,0 +1,8 @@
+content chrome.runtime.sendMessage bhenjege ek msg send karo
+
+   chrome.runtime.sendMessage({
+        type: "copy paste", 
+        data: sampleData, 
+      });
+
+listen in app.jsx. reponse varibale khali hoga 

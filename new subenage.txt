@@ -1,0 +1,1622 @@
+console.log("Content script loaded 1");
+
+// function pintrestPage(target, event) {
+//   if (
+//     target.classList.contains("public-DraftStyleDefault-block") ||
+//     target.classList.contains("public-DraftStyleDefault-ltr") ||
+//     target.classList.contains("Jea") ||
+//     target.classList.contains("XbT") ||
+//     target.classList.contains("jar") ||
+//     target.classList.contains("jzS") ||
+//     target.classList.contains("rDA") ||
+//     target.classList.contains("ujU") ||
+//     target.classList.contains("zI7") ||
+//     target.classList.contains("iyn") ||
+//     target.classList.contains("Hsu"))
+//     console.log("clicked")
+//   {
+//     event.stopPropagation();
+//     console.log("Pinterest element clicked");
+
+//     const element = document.querySelector(
+//       "#gradient > div > div > div.ujU.zI7.iyn.Hsu > div > div > div > div > div > div > div > div > div > div.Jea.jzS.zI7.iyn.Hsu > div.qiB > div > div > div > div.a3i.snW.zI7.iyn.Hsu > div"
+//     );
+//     console.log(element);
+//     displayContentPintrest(element);
+//   }
+//   if (
+//     [
+//       "Funny",
+//       "Serious",
+//       "Helpful",
+//       "Disagree",
+//       "Strongly_Agree",
+//       "Insightful",
+//     ].some((cls) => target.classList.contains(cls))
+//   ) {
+//     console.log(`Button ${target.classList} clicked`);
+//     console.log(target);
+
+//     let a =
+//       target.parentElement.parentElement.parentElement.parentElement
+//         .parentElement;
+//     let question = a.querySelector(".puppeteer_test_question_title").innerText;
+
+//     let more = a.querySelector(".qt_read_more");
+//     more?.click();
+
+//     let answer = a.querySelector(".puppeteer_test_answer_content").innerText;
+//     console.log(answer);
+//     console.log(question);
+//     let tone = target.textContent;
+
+//     let prompt = `You are a Quora writer agent, your job is to read this question: "${question}" and now for answer: "${answer}", write a comment for this answer with a ${tone} tone`;
+
+//     postData("https://visitsaudiai.com/api/v1/llm", { prompt: prompt }).then(
+//       (data) => {
+//         console.log(data);
+//         if (data.success) {
+//           console.log(data.data);
+//           let commentBox = target.parentElement.querySelector(".section");
+//           typeTextSlowly(commentBox, data.data);
+//         }
+//       }
+//     );
+//   }
+// }
+// function displayContentPintrest(commentBox) {
+//   const sectionElement =
+//     commentBox.closest(".comments-comment-box") || commentBox.parentNode;
+//   if (sectionElement && !sectionElement.querySelector(".Funny")) {
+//     const button1 = document.createElement("button");
+//     const button2 = document.createElement("button");
+//     const button3 = document.createElement("button");
+//     const button4 = document.createElement("button");
+//     const button5 = document.createElement("button");
+//     const button6 = document.createElement("button");
+
+//     button1.textContent = "Funny";
+//     button2.textContent = "Serious";
+//     button3.textContent = "Helpful";
+//     button4.textContent = "Disagree";
+//     button5.textContent = "Strongly Agree";
+//     button6.textContent = "Insightful";
+
+//     button1.classList.add("Funny");
+//     button2.classList.add("Serious");
+//     button3.classList.add("Helpful");
+//     button4.classList.add("Disagree");
+//     button5.classList.add("Strongly_Agree");
+//     button6.classList.add("Insightful");
+
+//     const buttonStyle = {
+//       backgroundColor: "#b92b27",
+//       color: "white",
+//       border: "none",
+//       padding: "10px 20px",
+//       borderRadius: "5px",
+//       cursor: "pointer",
+//       margin: "5px",
+//     };
+
+//     const button1Style = {
+//       marginLeft: "70px",
+//     };
+//     const button5Style = {
+//       marginLeft: "70px",
+//     };
+
+//     Object.assign(button1.style, buttonStyle, button1Style);
+//     Object.assign(button2.style, buttonStyle);
+//     Object.assign(button3.style, buttonStyle);
+//     Object.assign(button4.style, buttonStyle);
+//     Object.assign(button5.style, buttonStyle, button5Style);
+//     Object.assign(button6.style, buttonStyle);
+
+//     sectionElement.insertAdjacentElement("afterend", button6);
+//     sectionElement.insertAdjacentElement("afterend", button5);
+//     sectionElement.insertAdjacentElement("afterend", button4);
+//     sectionElement.insertAdjacentElement("afterend", button3);
+//     sectionElement.insertAdjacentElement("afterend", button2);
+//     sectionElement.insertAdjacentElement("afterend", button1);
+
+//     console.log("Buttons inserted below comment box");
+//   }
+// }
+
+function observeQuoraMoreButtons() {
+  const observerCallback = function () {
+    let newMore = document.querySelectorAll(".qt_read_more:not(.observed)");
+    newMore.forEach((more) => {
+      more.classList.add("observed");
+      more.click();
+    });
+  };
+  const observer = new MutationObserver(observerCallback);
+  let allMore = document.querySelectorAll(".qt_read_more");
+  allMore.forEach((more) => {
+    more.classList.add("observed");
+    more.click();
+  });
+
+  observer.observe(document.body, { childList: true, subtree: true });
+}
+
+function observeFacebookMoreButtons() {
+  const observerCallback = function () {
+    let newMore = document.querySelectorAll(".x1i10hfl.xjbqb8w.x1ejq31n.xd10rxx.x1sy0etr.x17r0tee.x972fbf.xcfux6l.x1qhh985.xm0m39n.x9f619.x1ypdohk.xt0psk2.xe8uvvx.xdj266r.x11i5rnm.xat24cr.x1mh8g0r.xexx8yu.x4uap5.x18d9i69.xkhd6sd.x16tdsg8.x1hl2dhg.xggy1nq.x1a2a7pz.x1sur9pj.xkrqix3.xzsf02u.x1s688f:not(.observed)");
+    newMore.forEach((more) => {
+      more.classList.add("observed");
+    });
+  };
+  const observer = new MutationObserver(observerCallback);
+  observer.observe(document.body, { childList: true, subtree: true });
+}
+// function createButton(text, className) {
+//   let button = document.createElement("button");
+//   button.textContent = text;
+//   button.classList.add(className);
+//   return button;
+// }
+if (window.location.host === 'www.quora.com') {
+  observeQuoraMoreButtons();
+}
+document.addEventListener("click", function (event) {
+  const target = event.target;
+  console.log(target)
+  if (window.location.host === 'www.quora.com') {
+    quoraPage(target)
+  }
+  else if (window.location.host === 'in.pinterest.com') {
+    pintrestPagee(target)
+    console.log("windows", target)
+  }
+  else if (window.location.host === 'www.linkedin.com') {
+    linkedinPage(target)
+  }
+  else if (window.location.host === 'dev.to') {
+    devPage(target)
+  }
+  else if (window.location.host === 'www.producthunt.com') {
+    productHuntPage(target)
+  }
+  // else if (window.location.host === 'substack.com') {
+  //  handleDynamicClick(event)
+  // }
+  else if (window.location.host === 'x.com') {
+    twitterPage(target)
+  }
+  else if (window.location.host === 'wordpress.com') {
+    wordpressPage(target)
+  }
+  else if (window.location.host === 'www.facebook.com') {
+    facebookPage(target)
+  }
+  else if (window.location.host === 'www.threads.net') {
+    threadsPage(target)
+  }
+
+  else if (window.location.host === 'medium.com') {
+    mediumPage(target)
+  }
+});
+function setReactTextareaValue(className, text,speed = 20) {
+  // Find the textarea element by its class name
+  var textarea = document.querySelector("textarea." + className);
+
+  if (textarea) {
+      // Focus on the textarea to simulate user interaction
+      textarea.focus();
+
+      // Use typeTextSlowly to input text
+      typeTextSlowly(textarea, text, speed);
+  } else {
+      console.error("Textarea element not found");
+  }
+}
+function quoraPage(target) {
+  if (target.classList.contains("section")) { //was section clicked
+    let sectionElement;
+
+    if (target.closest(".section")) { //if target=section 
+      sectionElement =                 //let sectionElement be the whole post
+        target.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode
+          .parentNode; // the whole comment box
+    }
+    if (sectionElement && !sectionElement.parentElement.querySelector(".Funny")) {
+      let button1 = document.createElement("button");
+      let button2 = document.createElement("button");
+      let button3 = document.createElement("button");
+      let button4 = document.createElement("button");
+      let button5 = document.createElement("button");
+      let button6 = document.createElement("button");
+
+      button1.textContent = "Funny";
+      button2.textContent = "Serious";
+      button3.textContent = "Helpful";
+      button4.textContent = "Disagree";
+      button5.textContent = "Strongly Agree";
+      button6.textContent = "Insightful";
+
+      button1.classList.add("Funny");
+      button2.classList.add("Serious");
+      button3.classList.add("Helpful");
+      button4.classList.add("Disagree");
+      button5.classList.add("Strongly_Agree");
+      button6.classList.add("Insightful");
+
+      const buttonStyle = {
+        backgroundColor: "#b92b27",
+        color: "white",
+        border: "none",
+        padding: "10px 20px",
+        borderRadius: "5px",
+        cursor: "pointer",
+        margin: "5px",
+      };
+
+      const button1Style = {
+        marginLeft: "70px",
+      };
+      const button5Style = {
+        marginLeft: "70px",
+      };
+      //                target    ,  source
+      Object.assign(button1.style, buttonStyle, button1Style);
+      Object.assign(button2.style, buttonStyle);
+      Object.assign(button3.style, buttonStyle);
+      Object.assign(button4.style, buttonStyle);
+      Object.assign(button5.style, buttonStyle, button5Style);
+      Object.assign(button6.style, buttonStyle);
+
+      sectionElement.insertAdjacentElement("afterend", button6);
+      sectionElement.insertAdjacentElement("afterend", button5);
+      sectionElement.insertAdjacentElement("afterend", button4);
+      sectionElement.insertAdjacentElement("afterend", button3);
+      sectionElement.insertAdjacentElement("afterend", button2);
+      sectionElement.insertAdjacentElement("afterend", button1);
+    }
+  }
+
+  if (
+    target.classList.contains("Funny") ||
+    target.classList.contains("Serious") ||
+    target.classList.contains("Helpful") ||
+    target.classList.contains("Disagree") ||
+    target.classList.contains("Strongly_Agree") ||
+    target.classList.contains("Insightful")
+  ) {
+    console.log(`Button ${target.classList} clicked`);
+    console.log("2nd step after going into addventListener", target);
+
+    let a = target.parentElement.parentElement.parentElement.parentElement.parentElement;
+    let more = a.querySelector(".qt_read_more");
+    more?.click();
+    let question = a.querySelector(".puppeteer_test_question_title").innerText;
+    let answer = a.querySelector(".puppeteer_test_answer_content").innerText;
+    let imageElements = a.querySelectorAll(".q-image.qu-display--block");
+    let imageUrls = [];
+    imageElements.forEach(image => {
+      if (image.src && !image.src.toLowerCase().endsWith(".jpeg") && !image.src.toLowerCase().endsWith(".png")) {
+        imageUrls.push(image.src);
+      }
+    });
+    let tone = target.textContent;
+    console.log(answer);
+    console.log(question);
+    console.log(imageUrls);
+    imageUrls.forEach((url, index) => {
+      console.log(`Image ${index + 1}: ${url}`);
+    });
+
+    let prompt = `You are a Quora writer agent, your job is to read this question: "${question}" 
+        and now for answer: "${answer}", write a comment for this answer with a ${tone} tone.`;
+    if (imageUrls.length > 0) {
+      prompt += ` accoridng to this image,ignore the first image ${imageUrls.join(', ')}.`;
+    }
+
+    postData("https://app.spireflow.io/api/v1/llm", { prompt: prompt }).then(
+      (data) => {
+        console.log(data);
+        if (data.success) {
+          console.log(data.data);
+          let commentBox = target.parentElement.querySelector(".section");
+          typeTextSlowly(commentBox, data.data);
+        }
+      }
+    );
+  }
+}
+function pintrestPagee(target) {
+  console.log("came here", target)
+  if (target.classList.contains("DraftEditor-editorContainer")) {
+    console.log("target", target)
+    let sectionElement;
+
+    if (target.closest(".hs0.mQ8.un8.C9i.TB_")) {
+      sectionElement = target;
+      console.log("section", sectionElement)
+    }
+    if (sectionElement && !sectionElement.parentElement.querySelector(".Funny")) {
+      let button1 = document.createElement("button");
+      let button2 = document.createElement("button");
+      let button3 = document.createElement("button");
+      let button4 = document.createElement("button");
+      let button5 = document.createElement("button");
+      let button6 = document.createElement("button");
+
+      button1.textContent = "Funny";
+      button2.textContent = "Serious";
+      button3.textContent = "Helpful";
+      button4.textContent = "Disagree";
+      button5.textContent = "Strongly Agree";
+      button6.textContent = "Insightful";
+
+      button1.classList.add("Funny");
+      button2.classList.add("Serious");
+      button3.classList.add("Helpful");
+      button4.classList.add("Disagree");
+      button5.classList.add("Strongly_Agree");
+      button6.classList.add("Insightful");
+
+      const buttonStyle = {
+        backgroundColor: "#b92b27",
+        color: "white",
+        border: "none",
+        padding: "10px 20px",
+        borderRadius: "5px",
+        cursor: "pointer",
+        margin: "5px",
+      };
+
+      const button1Style = {
+        marginLeft: "70px",
+      };
+      const button5Style = {
+        marginLeft: "70px",
+      };
+      //                target    ,  source
+      Object.assign(button1.style, buttonStyle, button1Style);
+      Object.assign(button2.style, buttonStyle);
+      Object.assign(button3.style, buttonStyle);
+      Object.assign(button4.style, buttonStyle);
+      Object.assign(button5.style, buttonStyle, button5Style);
+      Object.assign(button6.style, buttonStyle);
+
+      sectionElement.insertAdjacentElement("afterend", button6);
+      sectionElement.insertAdjacentElement("afterend", button5);
+      sectionElement.insertAdjacentElement("afterend", button4);
+      sectionElement.insertAdjacentElement("afterend", button3);
+      sectionElement.insertAdjacentElement("afterend", button2);
+      sectionElement.insertAdjacentElement("afterend", button1);
+    }
+  }
+
+  if (
+    target.classList.contains("Funny") ||
+    target.classList.contains("Serious") ||
+    target.classList.contains("Helpful") ||
+    target.classList.contains("Disagree") ||
+    target.classList.contains("Strongly_Agree") ||
+    target.classList.contains("Insightful")
+  ) {
+    console.log(`Button ${target.classList} clicked`);
+    console.log("2nd step after going into addventListener", target);
+
+    let a = target.parentElement.parentElement.parentElement.parentElement.parentElement;
+    let more = a.querySelector(".qt_read_more");
+    more?.click();
+    let question = a.querySelector(".puppeteer_test_question_title").innerText;
+    let answer = a.querySelector(".puppeteer_test_answer_content").innerText;
+    let imageElements = a.querySelectorAll(".q-image.qu-display--block");
+    let imageUrls = [];
+    imageElements.forEach(image => {
+      if (image.src && !image.src.toLowerCase().endsWith(".jpeg") && !image.src.toLowerCase().endsWith(".png")) {
+        imageUrls.push(image.src);
+      }
+    });
+    let tone = target.textContent;
+    console.log(answer);
+    console.log(question);
+    console.log(imageUrls);
+    imageUrls.forEach((url, index) => {
+      console.log(`Image ${index + 1}: ${url}`);
+    });
+
+    let prompt = `You are a Quora writer agent, your job is to read this question: "${question}" 
+        and now for answer: "${answer}", write a comment for this answer with a ${tone} tone.`;
+    if (imageUrls.length > 0) {
+      prompt += ` accoridng to this image,ignore the first image ${imageUrls.join(', ')}.`;
+    }
+
+    postData("https://app.spireflow.io/api/v1/llm", { prompt: prompt }).then(
+      (data) => {
+        console.log(data);
+        if (data.success) {
+          console.log(data.data);
+          let commentBox = target.parentElement.querySelector(".section");
+          typeTextSlowly(commentBox, data.data);
+        }
+      }
+    );
+  }
+}
+function linkedinPage(target) {
+  if (
+    target.classList.contains("artdeco-button__text") ||
+    target.classList.contains("artdeco-button__icon") ||
+    target.classList.contains("artdeco-button") ||
+    target.classList.contains("artdeco-button") ||
+    target.classList.contains("ql-editor ql-blank")
+  ) {
+    const commentBoxes = document.querySelectorAll(".comments-comment-box");
+    commentBoxes.forEach((box) => {
+      let sectionElement = box.closest(".comments-comment-box") || box.parentNode;
+      if (sectionElement && !sectionElement.parentElement.querySelector(".Funny")) {
+        let button1 = document.createElement("button");
+        let button2 = document.createElement("button");
+        let button3 = document.createElement("button");
+        let button4 = document.createElement("button");
+        let button5 = document.createElement("button");
+        let button6 = document.createElement("button");
+
+        button1.textContent = "Funny";
+        button2.textContent = "Serious";
+        button3.textContent = "Helpful";
+        button4.textContent = "Disagree";
+        button5.textContent = "Strongly Agree";
+        button6.textContent = "Insightful";
+
+        button1.classList.add("Funny");
+        button2.classList.add("Serious");
+        button3.classList.add("Helpful");
+        button4.classList.add("Disagree");
+        button5.classList.add("Strongly_Agree");
+        button6.classList.add("Insightful");
+
+        const buttonStyle = {
+          backgroundColor: "#0077b5",
+          color: "white",
+          border: "none",
+          padding: "10px 20px",
+          borderRadius: "20px",
+          cursor: "pointer",
+          margin: "5px",
+          fontSize: "14px",
+          fontWeight: "bold",
+        };
+
+        const buttonContainerStyle = {
+          display: "flex",
+          justifyContent: "center",
+          flexWrap: "wrap",
+          gap: "10px",
+        };
+
+        Object.assign(button1.style, buttonStyle);
+        Object.assign(button2.style, buttonStyle);
+        Object.assign(button3.style, buttonStyle);
+        Object.assign(button4.style, buttonStyle);
+        Object.assign(button5.style, buttonStyle);
+        Object.assign(button6.style, buttonStyle);
+
+        let buttonContainer = document.createElement("div");
+        Object.assign(buttonContainer.style, buttonContainerStyle);
+
+        buttonContainer.appendChild(button1);
+        buttonContainer.appendChild(button2);
+        buttonContainer.appendChild(button3);
+        buttonContainer.appendChild(button4);
+        buttonContainer.appendChild(button5);
+        buttonContainer.appendChild(button6);
+
+        sectionElement.insertAdjacentElement("afterend", buttonContainer);
+      }
+    });
+  }
+
+  if (
+    target.classList.contains("Funny") ||
+    target.classList.contains("Serious") ||
+    target.classList.contains("Helpful") ||
+    target.classList.contains("Disagree") ||
+    target.classList.contains("Strongly_Agree") ||
+    target.classList.contains("Insightful")
+  ) {
+    console.log(`Button ${target.classList} clicked`);
+    console.log("if target is section go to displayContent", target);
+    let a = target.parentElement.parentElement.parentElement.parentElement;
+    let questionElement = a.querySelector(".update-components-text, .relative.update-components-update-v2__commentary");
+    let question = questionElement ? questionElement.innerText : "";
+
+    let additionalElement = a.querySelector(".update-components-mini-update-v2.feed-shared-update-v2__update-content-wrapper.artdeco-card");
+    if (additionalElement) {
+      question += " " + additionalElement.innerText;
+    }
+    console.log(question);
+    let imgElement = a.querySelector(".ivm-view-attr__img--centered.ivm-view-attr__img--aspect-fill.update-components-image__image.evi-image.lazy-image.ember-view");
+    let img = imgElement ? imgElement.src : null;
+    console.log(img);
+
+    let tone = target.textContent;
+    let prompt;
+
+    if (img) {
+      prompt = `You are a Quora writer agent, your job is to read this question: "${question}" and write a comment for this answer with a ${tone} tone, according to this image: "${img}"`;
+    } else {
+      prompt = `You are a Quora writer agent, your job is to read this question: "${question}" and write a comment for this answer with a ${tone} tone.`;
+    }
+
+
+    postData("https://app.spireflow.io/api/v1/llm", { prompt: prompt }).then(
+      (data) => {
+        console.log(data);
+        if (data.success) {
+          console.log(data.data);
+          let full = target.parentElement.parentElement.parentElement.querySelector(".comments-comment-box");
+          let pElement = full.querySelector("p");
+          typeTextSlowly(pElement, data.data);
+        console.log("this is commentbox",pElement)
+        }
+      }
+    );
+  }
+}
+function devPage(target) {
+  if (target.classList.contains("crayons-textfield") &&
+    target.classList.contains("comment-textarea") &&
+    target.classList.contains("crayons-textfield--ghost")
+  ) {
+    const dropAreas = document.querySelectorAll('.comment-form__inner');
+    dropAreas.forEach(dropArea => {
+      console.log("came to displayContentDev");
+      let sectionElement;
+      if (dropArea.closest('.comment-form__inner')) {
+        sectionElement = dropArea.closest('.comment-form__inner');
+        console.log("CAME to display content");
+      }
+
+      if (sectionElement && !sectionElement.querySelector(".Funny")) {
+        let button1 = document.createElement("button");
+        let button2 = document.createElement("button");
+        let button3 = document.createElement("button");
+
+        let button4 = document.createElement("button");
+        let button5 = document.createElement("button");
+        let button6 = document.createElement("button");
+
+        button1.textContent = "Funny";
+        button2.textContent = "Serious";
+        button3.textContent = "Helpful";
+        button4.textContent = "Disagree";
+        button5.textContent = "Strongly Agree";
+        button6.textContent = "Insightful";
+
+        button1.classList.add("Funny");
+        button2.classList.add("Serious");
+        button3.classList.add("Helpful");
+        button4.classList.add("Disagree");
+        button5.classList.add("Strongly_Agree");
+        button6.classList.add("Insightful");
+
+        const buttonStyle = {
+          backgroundColor: "#0077b5", // LinkedIn blue color
+          color: "white",
+          border: "none",
+          padding: "10px 20px",
+          borderRadius: "20px", // Rounded corners for bubble form
+          cursor: "pointer",
+          margin: "5px",
+          fontSize: "14px",
+          fontWeight: "bold",
+        };
+
+        const buttonContainerStyle = {
+          display: "flex",
+          justifyContent: "center",
+          flexWrap: "wrap",
+          gap: "10px",
+        };
+
+        Object.assign(button1.style, buttonStyle);
+        Object.assign(button2.style, buttonStyle);
+        Object.assign(button3.style, buttonStyle);
+        Object.assign(button4.style, buttonStyle);
+        Object.assign(button5.style, buttonStyle);
+        Object.assign(button6.style, buttonStyle);
+
+        let buttonContainer = document.createElement("div");
+        Object.assign(buttonContainer.style, buttonContainerStyle);
+
+        buttonContainer.appendChild(button1);
+        buttonContainer.appendChild(button2);
+        buttonContainer.appendChild(button3);
+        buttonContainer.appendChild(button4);
+        buttonContainer.appendChild(button5);
+        buttonContainer.appendChild(button6);
+
+        sectionElement.appendChild(buttonContainer);
+      }
+    });
+  }
+
+  if (
+    target.classList.contains("Funny") ||
+    target.classList.contains("Serious") ||
+    target.classList.contains("Helpful") ||
+    target.classList.contains("Disagree") ||
+    target.classList.contains("Strongly_Agree") ||
+    target.classList.contains("Insightful")
+  ) {
+    console.log(`Button ${target.classList} clicked`);
+    console.log("2nd step after going into addventListener", target);
+    let question = document.querySelector(".crayons-article__main").innerText;
+    console.log(question)
+    let imgElements = document.querySelectorAll('.crayons-article__body img');
+    let imageUrls = [];
+    imgElements.forEach(imgElement => {
+      imageUrls.push(imgElement.src);
+    });
+    imageUrls.forEach((url, index) => {
+      console.log(`Image ${index + 1}: ${url}`);
+    });
+    let title = document.querySelector(".crayons-article__header__meta").innerText;
+    console.log(title);
+    let tone = target.textContent;
+    let prompt = `You are a Quora writer agent, your job is to read this question: "${question}" with the title: "${title}" and write a comment for it with a ${tone} tone`;
+    if (imageUrls.length > 0) {
+      prompt += ` accoding to this imgs ${imageUrls.join(', ')}.`;
+    }
+    postData("https://app.spireflow.io/api/v1/llm", { prompt: prompt }).then(
+      (data) => {
+        console.log(data);
+        if (data.success) {
+          console.log(data.data);
+          let commentBox = document.querySelector(".c-autocomplete");
+          typeTextSlowly(commentBox, data.data);
+        }
+      }
+    );
+  }
+}
+function productHuntPage(target) {
+  if (
+    target.classList.contains("rta__textarea") ||
+    target.classList.contains("styles_textArea__PGN9o")
+  ) {
+    const commentBoxes = document.querySelectorAll("div.styles_container__AOfdY.flex.flex-row.gap-3.pt-3.pb-5");
+    commentBoxes.forEach((box) => {
+      console.log("came inside displayContent");
+      let sectionElement;
+      if (box.closest("div.styles_container__AOfdY.flex.flex-row.gap-3.pt-3.pb-5")) {
+        sectionElement = box.closest("div.styles_container__AOfdY.flex.flex-row.gap-3.pt-3.pb-5");
+        console.log("came inside this if condition");
+      }
+      if (sectionElement && !sectionElement.parentElement.querySelector(".Funny")) {
+        let button1 = document.createElement("button");
+        let button2 = document.createElement("button");
+        let button3 = document.createElement("button");
+        let button4 = document.createElement("button");
+        let button5 = document.createElement("button");
+        let button6 = document.createElement("button");
+
+        button1.textContent = "Funny";
+        button2.textContent = "Serious";
+        button3.textContent = "Helpful";
+        button4.textContent = "Disagree";
+        button5.textContent = "Strongly Agree";
+        button6.textContent = "Insightful";
+
+        button1.classList.add("Funny");
+        button2.classList.add("Serious");
+        button3.classList.add("Helpful");
+        button4.classList.add("Disagree");
+        button5.classList.add("Strongly_Agree");
+        button6.classList.add("Insightful");
+
+        const buttonStyle = {
+          backgroundColor: "#0077b5", // LinkedIn blue color
+          color: "white",
+          border: "none",
+          padding: "10px 20px",
+          borderRadius: "20px", // Rounded corners for bubble form
+          cursor: "pointer",
+          margin: "5px",
+          fontSize: "14px",
+          fontWeight: "bold",
+        };
+
+        const buttonContainerStyle = {
+          display: "flex",
+          justifyContent: "center",
+          flexWrap: "wrap",
+          gap: "10px",
+        };
+
+        Object.assign(button1.style, buttonStyle);
+        Object.assign(button2.style, buttonStyle);
+        Object.assign(button3.style, buttonStyle);
+        Object.assign(button4.style, buttonStyle);
+        Object.assign(button5.style, buttonStyle);
+        Object.assign(button6.style, buttonStyle);
+
+        let buttonContainer = document.createElement("div");
+        Object.assign(buttonContainer.style, buttonContainerStyle);
+
+        buttonContainer.appendChild(button1);
+        buttonContainer.appendChild(button2);
+        buttonContainer.appendChild(button3);
+        buttonContainer.appendChild(button4);
+        buttonContainer.appendChild(button5);
+        buttonContainer.appendChild(button6);
+
+        sectionElement.insertAdjacentElement("afterend", buttonContainer);
+      }
+    });
+    console.log("2nd step", target);
+  }
+
+  if (
+    target.classList.contains("Funny") ||
+    target.classList.contains("Serious") ||
+    target.classList.contains("Helpful") ||
+    target.classList.contains("Disagree") ||
+    target.classList.contains("Strongly_Agree") ||
+    target.classList.contains("Insightful")
+  ) {
+    console.log(`Button ${target.classList} clicked`);
+    console.log(target);
+
+    let title = document.querySelector('.styles_title__x5KUY').innerText;
+    let caption = document.querySelector('.styles_tagline__svEiR').innerText;
+    let content = document.querySelector('.styles_htmlText__eYPgj').innerText;
+    console.log(title);
+    console.log(caption);
+    console.log(content);
+    let imgElements = document.querySelectorAll('.styles_image__pvnpo');
+    let imageUrls = [];
+    imgElements.forEach(imgElement => {
+      imageUrls.push(imgElement.src);
+    });
+    imageUrls.forEach((url, index) => {
+      console.log(`Image ${index + 1}: ${url}`);
+    });
+
+    let tone = target.textContent;
+    let prompt = `You are a writer agent. Your job is to read this content: "${content}" and now for title: "${title}" and caption: "${caption}", write a comment for this post with a ${tone} tone`;
+    if (imageUrls.length > 0) {
+      prompt += ` The images related to this content are: ${imageUrls.join(', ')}.`;
+    }
+
+    
+
+  
+  // Your postData function
+  postData("https://app.spireflow.io/api/v1/llm", { prompt: prompt }).then(
+      (data) => {
+          console.log(data);
+          if (data.success) {
+              console.log(data.data);
+              // Assuming the textarea has the class name "rta__textarea.styles_textArea__PGN9o"
+              const className = "rta__textarea.styles_textArea__PGN9o";
+              setReactTextareaValue(className, data.data);
+  
+              // Optionally click the submit button after setting the value
+              let submitButton = document.querySelector("button.submit-button-class"); // Update this selector based on the actual class name of your submit button
+              if (submitButton) {
+                  submitButton.click();
+              } else {
+                  console.error("Submit button not found");
+              }
+          }
+      }
+  );
+  }
+}
+(function () {
+  console.log("Initializing script...");
+  const commentBoxes = document.querySelectorAll("#headlessui-dialog-panel-P0-0 > div > div.pencraft.pc-display-flex.pc-flexDirection-column.pc-reset._modalColumn_1n5p7_82 > div.pencraft.pc-display-flex.pc-flexDirection-column.pc-gap-12.pc-padding-16.pc-reset._overflowY-auto_1w60r_249._scrollBar-hidden_1w60r_259 > div > div > div:nth-child(2) > div > div._editorContent_n0l68_44 > div");
+  console.log("Came to display content", commentBoxes);
+  commentBoxes.forEach((box) => subStackPage(box));
+  observeDomChanges();
+})();
+function observeDomChanges() {
+  console.log("Came to observe")
+  const mutationObserver = new MutationObserver((mutationsList) => {
+    for (const mutation of mutationsList) {
+      if (mutation.type === "childList") {
+        mutation.addedNodes.forEach((node) => {
+          if (node.nodeType === Node.ELEMENT_NODE) {
+            node.addEventListener("click", handleDynamicClick);
+          }
+        });
+      }
+    }
+  });
+  mutationObserver.observe(document.body, { childList: true, subtree: true });
+}
+function handleDynamicClick(event) {
+  const target = event.target;
+  console.log("handledynamic");
+
+  if (target.classList.contains("is-empty") && window.location.host === 'substack.com') {
+    subStackPage(target);
+    console.log("target inside handleDynamic", target);
+  }
+}
+function subStackPage(target) {
+  let sectionElement = document.querySelector("#headlessui-dialog-panel-P0-0 > div > div.pencraft.pc-display-flex.pc-flexDirection-column.pc-reset._modalColumn_2m7d7_82 > div.pencraft.pc-display-flex.pc-flexDirection-column.pc-gap-12.pc-padding-16.pc-reset._overflowY-auto_17s6c_249._scrollBar-hidden_17s6c_259 > div > div > div:nth-child(2) > div > div._editorContent_139vu_44 > div");
+  console.log("section", sectionElement);
+  if (sectionElement && !sectionElement.parentElement.querySelector(".Funny")) {
+    let button1 = document.createElement("button");
+    let button2 = document.createElement("button");
+    let button3 = document.createElement("button");
+    let button4 = document.createElement("button");
+    let button5 = document.createElement("button");
+    let button6 = document.createElement("button");
+    button1.textContent = "Funny";
+    button2.textContent = "Serious";
+    button3.textContent = "Helpful";
+    button4.textContent = "Disagree";
+    button5.textContent = "Strongly Agree";
+    button6.textContent = "Insightful";
+
+    button1.classList.add("Funny");
+    button2.classList.add("Serious");
+    button3.classList.add("Helpful");
+    button4.classList.add("Disagree");
+    button5.classList.add("Strongly_Agree");
+    button6.classList.add("Insightful");
+    button1.addEventListener("click", function () {
+      console.log("Button 1 clicked");
+    });
+    const buttonStyle = {
+      backgroundColor: "#b92b27",
+      color: "white",
+      border: "none",
+      padding: "10px 20px",
+      borderRadius: "5px",
+      cursor: "pointer",
+      margin: "5px",
+    };
+
+    const button1Style = {
+      marginLeft: "70px",
+    };
+    const button5Style = {
+      marginLeft: "70px",
+    };
+    //                target    ,  source
+    Object.assign(button1.style, buttonStyle, button1Style);
+    Object.assign(button2.style, buttonStyle);
+    Object.assign(button3.style, buttonStyle);
+    Object.assign(button4.style, buttonStyle);
+    Object.assign(button5.style, buttonStyle, button5Style);
+    Object.assign(button6.style, buttonStyle);
+
+
+
+    sectionElement.insertAdjacentElement("afterend", button6);
+    sectionElement.insertAdjacentElement("afterend", button5);
+    sectionElement.insertAdjacentElement("afterend", button4);
+    sectionElement.insertAdjacentElement("afterend", button3);
+    sectionElement.insertAdjacentElement("afterend", button2);
+    sectionElement.insertAdjacentElement("afterend", button1);
+  }
+
+  if (
+    target.classList.contains("Funny") ||
+    target.classList.contains("Serious") ||
+    target.classList.contains("Helpful") ||
+    target.classList.contains("Disagree") ||
+    target.classList.contains("Strongly_Agree") ||
+    target.classList.contains("Insightful")
+
+  ) {
+    console.log(`Button ${target.classList} clicked`);
+    
+console.log("clicked",target)
+    let fullPost = target.parentElement.parentElement.parentElement.parentElement.parentElement;
+    let text= fullPost.innerText
+    console.log(text)
+    let content = fullPost.querySelector(".ProseMirror.FeedProseMirror").innerText;
+    
+    let tone = target.textContent;
+    console.log(content);
+
+    let prompt = `You are a Quora writer agent, your job is to read this question: "${content}" , write a comment for this answer with a ${tone} tone.`;
+
+    postData("https://app.spireflow.io/api/v1/llm", { prompt: prompt }).then(
+      (data) => {
+        console.log(data);
+        if (data.success) {
+          console.log(data.data);
+          let commentBox = target.parentElement.querySelector(".section");
+          typeTextSlowly(commentBox, data.data);
+        }
+      }
+    );
+  }
+}
+function wordpressPage(target) {
+  let sectionElement;
+  console.log("1st");
+  if (target.classList.contains("form-textarea")) {
+
+    if (target.closest(".form-textarea")) { // if target is a section 
+      sectionElement = target.parentElement.parentElement.parentNode; // the whole comment box
+    }
+    console.log("section element is", sectionElement);
+  } else if (target.classList.contains("is-root-container") && target.classList.contains("block-editor-block-list__layout")) {
+    sectionElement = document.querySelector(".block-editor-iframe__scale-container");
+    console.log("section element is", sectionElement);
+  }
+
+  if (sectionElement && !sectionElement.parentElement.querySelector(".Funny")) {
+    let button1 = document.createElement("button");
+    let button2 = document.createElement("button");
+    let button3 = document.createElement("button");
+    let button4 = document.createElement("button");
+    let button5 = document.createElement("button");
+    let button6 = document.createElement("button");
+
+    button1.textContent = "Funny";
+    button2.textContent = "Serious";
+    button3.textContent = "Helpful";
+    button4.textContent = "Disagree";
+    button5.textContent = "Strongly Agree";
+    button6.textContent = "Insightful";
+
+    button1.classList.add("Funny");
+    button2.classList.add("Serious");
+    button3.classList.add("Helpful");
+    button4.classList.add("Disagree");
+    button5.classList.add("Strongly_Agree");
+    button6.classList.add("Insightful");
+
+    const buttonStyle = {
+      backgroundColor: "#b92b27",
+      color: "black",
+      border: "none",
+      padding: "10px 20px",
+      borderRadius: "5px",
+      cursor: "pointer",
+      margin: "5px",
+    };
+
+    const button1Style = {
+      marginLeft: "70px",
+    };
+    const button5Style = {
+      marginLeft: "70px",
+    };
+
+    Object.assign(button1.style, buttonStyle, button1Style);
+    Object.assign(button2.style, buttonStyle);
+    Object.assign(button3.style, buttonStyle);
+    Object.assign(button4.style, buttonStyle);
+    Object.assign(button5.style, buttonStyle, button5Style);
+    Object.assign(button6.style, buttonStyle);
+
+    sectionElement.insertAdjacentElement("afterend", button6);
+    sectionElement.insertAdjacentElement("afterend", button5);
+    sectionElement.insertAdjacentElement("afterend", button4);
+    sectionElement.insertAdjacentElement("afterend", button3);
+    sectionElement.insertAdjacentElement("afterend", button2);
+    sectionElement.insertAdjacentElement("afterend", button1);
+  }
+
+  if (
+    target.classList.contains("Funny") ||
+    target.classList.contains("Serious") ||
+    target.classList.contains("Helpful") ||
+    target.classList.contains("Disagree") ||
+    target.classList.contains("Strongly_Agree") ||
+    target.classList.contains("Insightful")
+  ) {
+    console.log(`Button ${target.classList} clicked`);
+    console.log("2nd step after going into addventListener", target);
+
+    let full = target.parentElement.parentElement;
+    let titleElement = full.querySelector(".reader-post-card__title");
+    // #primary > div > div > div > main > div.reader__content > div > article:nth-child(4) > div.comments__comment-list.is-inline.is-collapsed > form > fieldset > div > textarea
+    let content;
+    let title;
+
+    if (titleElement) {
+      title = titleElement.innerText;
+      content = full.querySelector(".reader-post-card__post").innerText;
+      console.log(content);
+      console.log(title);
+    } else {
+
+      full = target.parentElement.parentElement.parentElement;
+      title = full.querySelector(".reader-full-post__header").innerText;
+      content = full.querySelector(".reader-full-post__story-content").innerText;
+      console.log(content);
+      console.log(title);
+    }
+
+    let tone = target.textContent;
+    let prompt = `You are a Quora writer agent, your job is to read this title: "${title}" and content: "${content}", write a comment for this answer with a ${tone} tone`;
+
+    postData("https://app.spireflow.io/api/v1/llm", { prompt: prompt }).then((data) => {
+      console.log(data);
+      if (data.success) {
+        console.log(data.data);
+        let commentBox;
+        let found = false;
+        let index = 2; // Start with the second child element
+
+        while (!found) {
+          commentBox = full.querySelector(`#primary > div > div > div > main > div.reader__content > div > article:nth-child(${index}) > div.comments__comment-list.is-inline.is-collapsed > form > fieldset > div > textarea`);
+
+          if (commentBox) {
+            found = true; // Exit the loop if commentBox is found
+          } else {
+            index++; // Move to the next child element
+          }
+
+          let MAX_INDEX = 9;
+          if (index > MAX_INDEX) {
+            break;
+          }
+        }
+
+        // If commentBox is not found, try the alternative selector
+        if (!commentBox) {
+          commentBox = full.querySelector('#primary > div > main > div.reader-full-post__content > article > div.reader-full-post__comments-wrapper > div > form > fieldset > div > textarea');
+        }
+
+        if (commentBox) {
+          // Comment box found, type text into it
+          typeTextSlowly(commentBox, data.data);
+        } else {
+          // Comment box not found
+          console.error("Comment box not found.");
+        }
+      }
+    });
+  }
+}
+function twitterPage(target) {
+  if (
+    target.classList.contains("public-DraftStyleDefault-block ") ||
+    target.classList.contains("public-DraftStyleDefault-ltr")
+  ) {
+    console.log("step 1 function page", target);
+
+    let sectionElement;
+
+    if (target.closest(".DraftEditor-editorContainer")) {
+      sectionElement = target.closest(".DraftEditor-editorContainer");
+      console.log("came inside this if condition");
+
+      if (sectionElement && !sectionElement.parentElement.querySelector(".Funny")) {
+        let button1 = document.createElement("button");
+        let button2 = document.createElement("button");
+        let button3 = document.createElement("button");
+        let button4 = document.createElement("button");
+        let button5 = document.createElement("button");
+        let button6 = document.createElement("button");
+
+        button1.textContent = "Funny";
+        button2.textContent = "Serious";
+        button3.textContent = "Helpful";
+        button4.textContent = "Disagree";
+        button5.textContent = "Strongly Agree";
+        button6.textContent = "Insightful";
+
+        button1.classList.add("Funny");
+        button2.classList.add("Serious");
+        button3.classList.add("Helpful");
+        button4.classList.add("Disagree");
+        button5.classList.add("Strongly_Agree");
+        button6.classList.add("Insightful");
+
+        const buttonStyle = {
+          backgroundColor: "#b92b27",
+          color: "white",
+          border: "none",
+          padding: "10px 20px",
+          borderRadius: "5px",
+          cursor: "pointer",
+          margin: "5px",
+        };
+
+        const button1Style = {
+          marginLeft: "70px",
+        };
+
+        Object.assign(button1.style, buttonStyle, button1Style);
+        Object.assign(button2.style, buttonStyle);
+        Object.assign(button3.style, buttonStyle);
+        Object.assign(button4.style, buttonStyle);
+        Object.assign(button5.style, buttonStyle);
+        Object.assign(button6.style, buttonStyle);
+
+        sectionElement.insertAdjacentElement("afterend", button6);
+        sectionElement.insertAdjacentElement("afterend", button5);
+        sectionElement.insertAdjacentElement("afterend", button4);
+        sectionElement.insertAdjacentElement("afterend", button3);
+        sectionElement.insertAdjacentElement("afterend", button2);
+        sectionElement.insertAdjacentElement("afterend", button1);
+      }
+    }
+  }
+
+  if (
+    target.classList.contains("Funny") ||
+    target.classList.contains("Serious") ||
+    target.classList.contains("Helpful") ||
+    target.classList.contains("Disagree") ||
+    target.classList.contains("Strongly_Agree") ||
+    target.classList.contains("Insightful")
+  ) {
+    console.log(`Button ${target.classList} clicked`);
+    console.log("2nd step after going into addventListener", target);
+
+    let a = target
+      .parentElement.parentElement.parentElement.parentElement.parentElement
+      .parentElement.parentElement.parentElement.parentElement.parentElement
+      .parentElement.parentElement.parentElement.parentElement.parentElement
+      .parentElement.parentElement.parentElement.parentElement.parentElement
+      .parentElement.parentElement.parentElement.parentElement.parentElement
+      .parentElement;
+    let questionElement = a.querySelector('div[data-testid="tweetText"]');
+    let questionText;
+    console.log("A", a)
+    if (questionElement) {
+      questionText = questionElement.innerText;
+    } else {
+      // If the initial search fails, traverse up the DOM tree
+      let parentElement = target.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement
+      while (parentElement) {
+        questionElement = parentElement.querySelector('.css-175oi2r');
+        if (questionElement) {
+          questionText = questionElement.innerText;
+          break;
+        }
+        parentElement = parentElement.parentElement;
+      }
+    }
+    console.log("Question:", questionText);
+
+    let tone = target.textContent;
+    let imgElement = a.querySelector('img.css-9pa8cd');
+    let img = imgElement ? imgElement.src : null;
+    console.log("this is image", img)
+
+    let prompt;
+    if (img) {
+      prompt = `You are a Quora writer agent, your job is to read this question: "${questionText}" and write a comment for this answer with a ${tone} tone dont , according to this image,also write two lines about the image: "${img}" say something about the image too.`;
+    } else {
+      prompt = `You are a Quora writer agent, your job is to read this question: "${questionText}" and write a comment for this answer with a ${tone} tone.`;
+    }
+    function setReactTextareaValue(className, text) {
+      // Find the textarea element by its class name
+      var textarea = document.querySelector("textarea." + className);
+  
+      if (textarea) {
+          // Focus on the textarea to simulate user interaction
+          textarea.focus();
+  
+          // Use the native value setter to change the value
+          const nativeTextareaValueSetter = Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype, "value").set;
+          nativeTextareaValueSetter.call(textarea, text);
+  
+          // Create and dispatch the 'input' event to trigger React's synthetic event system
+          const event = new Event('input', { bubbles: true });
+          textarea.dispatchEvent(event);
+  
+          // Optionally blur the textarea to simulate the user leaving the field
+          textarea.blur();
+      } else {
+          console.error("Textarea element not found");
+      }
+  }
+    postData("https://app.spireflow.io/api/v1/llm", { prompt: prompt }).then(
+      (data) => {
+        console.log(data);
+        if (data.success) {
+          console.log(data.data);
+          
+            setReactTextareaValue("DraftEditor-root", data.data);
+          
+        }
+      }
+    );
+  }
+}
+function facebookPage(target) {
+  console.log("entered the function")
+  if (target.tagName.toLowerCase() === 'p' &&
+    target.classList.contains("xdj266r") &&
+    target.classList.contains("x11i5rnm") &&
+    target.classList.contains("xat24cr") &&
+    target.classList.contains("x1mh8g0r")) {
+    console.log("step 1 function page", target);
+  } {
+
+    let sectionElement;
+    if (target.closest("p.xdj266r.x11i5rnm.xat24cr.x1mh8g0r")) { //xwib8y2 xurb0ha x1y1aw1k
+      sectionElement = target.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode;
+
+      if (sectionElement && !sectionElement.parentElement.querySelector(".Funny")) {
+        let button1 = document.createElement("button");
+        let button2 = document.createElement("button");
+        let button3 = document.createElement("button");
+        let button4 = document.createElement("button");
+        let button5 = document.createElement("button");
+        let button6 = document.createElement("button");
+
+        button1.textContent = "Funny";
+        button2.textContent = "Serious";
+        button3.textContent = "Helpful";
+        button4.textContent = "Disagree";
+        button5.textContent = "Strongly Agree";
+        button6.textContent = "Insightful";
+
+        button1.classList.add("Funny");
+        button2.classList.add("Serious");
+        button3.classList.add("Helpful");
+        button4.classList.add("Disagree");
+        button5.classList.add("Strongly_Agree");
+        button6.classList.add("Insightful");
+
+        const buttonStyle = {
+          backgroundColor: "#b92b27",
+          color: "white",
+          border: "none",
+          padding: "10px 20px",
+          borderRadius: "5px",
+          cursor: "pointer",
+          margin: "5px",
+        };
+
+        const button1Style = {
+          marginLeft: "70px",
+        };
+
+        Object.assign(button1.style, buttonStyle, button1Style);
+        Object.assign(button2.style, buttonStyle);
+        Object.assign(button3.style, buttonStyle);
+        Object.assign(button4.style, buttonStyle);
+        Object.assign(button5.style, buttonStyle);
+        Object.assign(button6.style, buttonStyle);
+
+        sectionElement.appendChild(button6);
+        sectionElement.appendChild(button5);
+        sectionElement.appendChild(button4);
+        sectionElement.appendChild(button3);
+        sectionElement.appendChild(button2);
+        sectionElement.appendChild(button1);
+      }
+    }
+  }
+  if (
+    target.classList.contains("Funny") ||
+    target.classList.contains("Serious") ||
+    target.classList.contains("Helpful") ||
+    target.classList.contains("Disagree") ||
+    target.classList.contains("Strongly_Agree") ||
+    target.classList.contains("Insightful")
+  ) {
+    console.log(`Button ${target.classList} clicked`);
+    console.log("2nd step after going into addventListener", target);
+
+    let fullPost = target.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement;
+    let question = fullPost.querySelector('.xdj266r.x11i5rnm.xat24cr.x1mh8g0r.x1vvkbs.x126k92a');
+    let question1 = question ? question.innerText : null;
+    console.log(question1);
+
+    let tone = target.textContent;
+
+    let imageElements = fullPost.querySelectorAll(".x10l6tqk.x13vifvy");
+    let imageUrls = [];
+    imageElements.forEach(image => {
+      if (image.src) {
+        imageUrls.push(image.src);
+      }
+    });
+
+    console.log(imageUrls);
+    imageUrls.forEach((url, index) => {
+      console.log(`Image ${index + 1}: ${url}`);
+    });
+    //     let divElement = fullPost.querySelector('.x10l6tqk.x13vifvy');
+
+    // if (!divElement) {
+    //   divElement = fullPost.querySelector('.x1n2onr6');
+    // }
+
+    // let imageUrls = [];
+
+    // if (divElement) {
+    //   let imgElements = divElement.querySelectorAll('img');
+
+    //   imgElements.forEach(imgElement => {
+    //     let src = imgElement.src;
+    //     if (!src.endsWith('.png') && !src.endsWith('svg%3E')) {
+    //       imageUrls.push(src);
+    //     }
+    //   });
+
+    //   imageUrls.forEach((url, index) => {
+    //     console.log(`Image ${index + 1}: ${url}`);
+    //   });
+    // }
+
+
+    let textPost = fullPost.querySelector(".x6s0dn4.x78zum5.xdt5ytf.x5yr21d.xl56j7k.x10l6tqk.x17qophe.x13vifvy.xh8yej3");
+    let textPost1 = textPost ? textPost.innerText : null;
+    console.log(textPost1)
+    let prompt;
+
+    prompt = `You are writer agent, your job is to read this question: "${question1}" or this post "${textPost1} and write a comment for this answer with a ${tone} tone, according to this image"${imageUrls}" say something about the image too.`;
+
+
+
+
+    postData("https://app.spireflow.io/api/v1/llm", { prompt: prompt }).then(
+      (data) => {
+        console.log(data);
+        if (data.success) {
+          console.log(data.data);
+          let commentBox = fullPost.querySelector(".xi81zsa.x6ikm8r.x10wlt62.x47corl.x10l6tqk.x17qophe.xlyipyv.x13vifvy.x87ps6o.xuxw1ft.xh8yej3");
+          typeTextSlowly(commentBox, data.data);
+        }
+      }
+    );
+  }
+}
+if (window.location.host === 'www.facebook.com') {
+  observeFacebookMoreButtons();
+}
+function threadsPage(target) {
+  console.log("1st");
+  if (
+    target.tagName.toLowerCase() === "p" &&
+    target.classList.contains("xdj266r") &&
+    target.classList.contains("x11i5rnm") &&
+    target.classList.contains("xat24cr") &&
+    target.classList.contains("x1mh8g0r"))
+    console.log("step 1 function page", target);
+  {
+    let sectionElement = target.closest(".x9f619.xrvj5dj.xd0jker.x1odjw0f.x1l90r2v.xbbxn1n.xxbr6pl.x1wxlsmb.xyamay9");
+
+    console.log("this is section", sectionElement)
+
+    if (sectionElement && !sectionElement.parentElement.querySelector(".Serious")) {
+      let button1 = document.createElement("button");
+      let button2 = document.createElement("button");
+      let button3 = document.createElement("button");
+      let button4 = document.createElement("button");
+      let button5 = document.createElement("button");
+      let button6 = document.createElement("button");
+
+      button1.textContent = "Funny";
+      button2.textContent = "Serious";
+      button3.textContent = "Helpful";
+      button4.textContent = "Disagree";
+      button5.textContent = "Strongly Agree";
+      button6.textContent = "Insightful";
+
+      button1.classList.add("Funny");
+      button2.classList.add("Serious");
+      button3.classList.add("Helpful");
+      button4.classList.add("Disagree");
+      button5.classList.add("Strongly_Agree");
+      button6.classList.add("Insightful");
+
+      const buttonStyle = {
+        backgroundColor: "#b92b27",
+        color: "white",
+        border: "none",
+        padding: "10px 20px",
+        borderRadius: "5px",
+        cursor: "pointer",
+        margin: "5px",
+        fontSize: "5px",
+      };
+
+      Object.assign(button1.style, buttonStyle);
+      Object.assign(button2.style, buttonStyle);
+      Object.assign(button3.style, buttonStyle);
+      Object.assign(button4.style, buttonStyle);
+      Object.assign(button5.style, buttonStyle);
+      Object.assign(button6.style, buttonStyle);
+
+      sectionElement.insertAdjacentElement("afterend", button6);
+      sectionElement.insertAdjacentElement("afterend", button5);
+      sectionElement.insertAdjacentElement("afterend", button4);
+      sectionElement.insertAdjacentElement("afterend", button3);
+      sectionElement.insertAdjacentElement("afterend", button2);
+      sectionElement.insertAdjacentElement("afterend", button1);
+
+    }
+  }
+  if (
+    target.classList.contains("Funny") ||
+    target.classList.contains("Serious") ||
+    target.classList.contains("Helpful") ||
+    target.classList.contains("Disagree") ||
+    target.classList.contains("Strongly_Agree") ||
+    target.classList.contains("Insightful")
+  ) {
+    console.log(`Button ${target.classList} clicked`);
+    console.log("2nd step after going into addventListener", target);
+    let fullPost = target.parentElement.parentElement.parentElement;
+
+    let questionElement = fullPost.querySelector(
+      '.x1a6qonq.x6ikm8r.x10wlt62.xj0a0fe.x126k92a.x6prxxf.x7r5mf7'
+    );
+    let question = questionElement ? questionElement.innerText : null;
+    console.log(question);
+
+    let tone = target.textContent;
+    let imgElement = fullPost.querySelector('.xrvdsqn.xrvj5dj.x1mkdm3x.x5o4joa.xqvb90d img');
+    let img = imgElement ? imgElement.src : null;
+    console.log("this is image", img);
+
+    let prompt;
+    prompt = `You are a Quora writer agent, your job is to read this question if avaialabe: "${question}", and write a comment for this answer with a ${tone} tone, according to this image, also write two lines about the image: "${img}" say something about the image too.`;
+
+
+    postData("https://app.spireflow.io/api/v1/llm", { prompt: prompt }).then((data) => {
+      console.log(data);
+      if (data.success) {
+        console.log("this is content", data.data);
+        let commentBox = document.querySelector(".xzsf02u.xw2csxc.x1odjw0f.x1n2onr6.x1hnll1o.xpqswwc.notranslate");
+        //.x1n2onr6
+        typeTextSlowly(commentBox, data.data);
+
+      }
+    });
+  }
+}
+function mediumPage(target) {
+  console.log("target is", target)
+  if (target.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.querySelector('span[data-slate-node="text"]')) {
+    console.log("went clciked");
+    let sectionElement = target.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement
+    console.log("2nd function", sectionElement)
+
+    if (sectionElement && !document.querySelector(".Funny")) {
+      let button1 = document.createElement("button");
+      let button2 = document.createElement("button");
+      let button3 = document.createElement("button");
+      let button4 = document.createElement("button");
+      let button5 = document.createElement("button");
+      let button6 = document.createElement("button");
+
+      button1.textContent = "Funny";
+      button2.textContent = "Serious";
+      button3.textContent = "Helpful";
+      button4.textContent = "Disagree";
+      button5.textContent = "Strongly Agree";
+      button6.textContent = "Insightful";
+
+      button1.classList.add("Funny");
+      button2.classList.add("Serious");
+      button3.classList.add("Helpful");
+      button4.classList.add("Disagree");
+      button5.classList.add("Strongly_Agree");
+      button6.classList.add("Insightful");
+
+      const buttonStyle = {
+        backgroundColor: "#b92b27",
+        color: "white",
+        border: "none",
+        padding: "10px 20px",
+        borderRadius: "5px",
+        cursor: "pointer",
+        margin: "5px",
+      };
+
+      const button1Style = {
+        marginLeft: "70px",
+      };
+      const button5Style = {
+        marginLeft: "70px",
+      };
+
+      Object.assign(button1.style, buttonStyle, button1Style);
+      Object.assign(button2.style, buttonStyle);
+      Object.assign(button3.style, buttonStyle);
+      Object.assign(button4.style, buttonStyle);
+      Object.assign(button5.style, buttonStyle, button5Style);
+      Object.assign(button6.style, buttonStyle);
+
+      sectionElement.insertAdjacentElement("afterend", button6);
+      sectionElement.insertAdjacentElement("afterend", button5);
+      sectionElement.insertAdjacentElement("afterend", button4);
+      sectionElement.insertAdjacentElement("afterend", button3);
+      sectionElement.insertAdjacentElement("afterend", button2);
+      sectionElement.insertAdjacentElement("afterend", button1);
+    }
+  }
+
+  if (
+    target.classList.contains("Funny") ||
+    target.classList.contains("Serious") ||
+    target.classList.contains("Helpful") ||
+    target.classList.contains("Disagree") ||
+    target.classList.contains("Strongly_Agree") ||
+    target.classList.contains("Insightful")
+  ) {
+    console.log(`Button ${target.classList} clicked`);
+    console.log("2nd step after going into addventListener", target);
+
+    //got contnet for medium its in article
+    let article = document.querySelector('.a.b.c');
+    let content = article.innerText;
+    console.log(content);
+    let imageElements = article.querySelectorAll("img");
+
+    let imageUrls = [];
+    imageElements.forEach(image => {
+      if (image.src && image.getAttribute('data-testid') !== "authorPhoto") {
+        imageUrls.push(image.src);
+      }
+    });
+    let tone = target.textContent;
+    console.log(imageUrls);
+    imageUrls.forEach((url, index) => {
+      console.log(`Image ${index + 1}: ${url}`);
+    });
+
+
+    let prompt = `You are a Quora writer agent, your job is to read this content: "${content}" 
+       write a comment for this answer with a ${tone} tone.`;
+    if (imageUrls.length > 0) {
+      prompt += ` accoridng to this image,ignore the first image ${imageUrls.join(', ')}.`;
+    }
+
+    postData("https://app.spireflow.io/api/v1/llm", { prompt: prompt }).then(
+      (data) => {
+        console.log(data);
+        if (data.success) {
+          console.log(data.data);
+          let funny = document.querySelector('.Funny');
+          let parentElement = funny.parentElement
+          let inject = parentElement.childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[0]
+          typeTextSlowly(inject, data.data);
+        }
+      }
+    );
+  }
+}
+async function typeTextSlowly(element, text, speed = 50) {
+  element.value = "";
+  element.textContent = "";
+  for (let char of text) {
+    element.value += char;
+    element.textContent += char;
+    element.dispatchEvent(
+      new KeyboardEvent("keypress", { key: char, bubbles: true })
+    );
+    element.dispatchEvent(new Event("input", { bubbles: true }));
+    element.dispatchEvent(
+      new KeyboardEvent("keyup", { key: char, bubbles: true })
+    );
+    await new Promise((resolve) => setTimeout(resolve, speed));
+  }
+
+  element.dispatchEvent(new Event("change", { bubbles: true }));
+}
+async function postData(url = "", data = {}) {
+  const response = await fetch(url, {
+    method: "POST",
+    mode: "cors",
+    cache: "no-cache",
+    credentials: "same-origin",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    redirect: "follow",
+    referrerPolicy: "no-referrer",
+    body: JSON.stringify(data),
+  });
+  return response.json();
+}
